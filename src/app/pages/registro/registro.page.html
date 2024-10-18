@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Registro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="login-section ion-padding">
+    <div class="heading ion-padding">
+      <h1>Registro en AURONCOMICS!</h1>
+    </div>
+
+    <div class="login-form ion-padding">
+      <form (ngSubmit)="registrar()">
+
+        <!-- Nombre Completo -->
+        <div class="form-input">
+          <ion-icon name="person-outline"></ion-icon>
+          <ion-item>
+            <ion-label position="floating">Nombre Completo</ion-label>
+            <ion-input [(ngModel)]="nombre" name="nombre" required></ion-input>
+          </ion-item>
+        </div>
+
+        <!-- Correo Electrónico -->
+        <div class="form-input">
+          <ion-icon name="mail-outline"></ion-icon>
+          <ion-item>
+            <ion-label position="floating">Correo Electrónico</ion-label>
+            <ion-input [(ngModel)]="correo" name="correo" type="email" required></ion-input>
+          </ion-item>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="form-input">
+          <ion-icon name="lock-closed-outline"></ion-icon>
+          <ion-item>
+            <ion-label position="floating">Contraseña</ion-label>
+            <ion-input [(ngModel)]="password" name="password" type="password" required></ion-input>
+          </ion-item>
+        </div>
+
+        <!-- Confirmar Contraseña -->
+        <div class="form-input">
+          <ion-icon name="lock-closed-outline"></ion-icon>
+          <ion-item>
+            <ion-label position="floating">Confirmar Contraseña</ion-label>
+            <ion-input [(ngModel)]="confirmPassword" name="confirmPassword" type="password" required></ion-input>
+          </ion-item>
+        </div>
+
+        <!-- Botón de Registro -->
+        <div class="action-buttons ion-padding">
+          <ion-button color="success" shape="round" type="submit">Registrar</ion-button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</ion-content>

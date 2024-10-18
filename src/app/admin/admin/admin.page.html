@@ -1,0 +1,116 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="success">
+    <ion-title>
+      ADMINISTRADOR
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Administrador</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Botón para cerrar sesión -->
+  <ion-button color="success" shape="round" [routerLink]="['/login']">Cerrar sesión</ion-button>
+
+  <!-- Botones de agregar y modificar cómic -->
+  <div style="text-align: center; margin: 10px 0;">
+    <ion-button color="success" shape="round" (click)="openForm('Agregar')">Agregar</ion-button>
+    <ion-button color="success" shape="round" (click)="openForm('Modificar')">Modificar</ion-button>
+    <ion-button color="success" shape="round" (click)="eliminarItem('comic.title')">eliminar</ion-button>
+  </div>
+  
+
+  <!-- Tarjeta 1 - The Flash -->
+  <ion-card>
+    <img alt="Flash cover" src="https://4.bp.blogspot.com/-sqPbh2ZdQSI/U0i_XkogpMI/AAAAAAAAEKM/Jjo7cJQs2hQ/s1600/TheFlash30Cover.jpg" style="width: 250px; height: 250px;" />
+    <ion-card-header>
+      <ion-card-title>The Flash</ion-card-title>
+      <ion-card-subtitle>The Flash The Number 52</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      Flash (Barry Allen) y Flash (Wally West) en el volumen 52. Ambos héroes enfrentan una nueva amenaza.
+      <br>
+      Precio: $11.300<br>
+      Autor: Joshua Williamson<br>
+      Ilustrador: Carmine Di Giandomenico<br>
+      Editor: DC Comics<br>
+      Fecha de publicación: 12 de Abril de 2017
+    </ion-card-content>
+    <!-- Botón Eliminar -->
+    <ion-button color="success" shape="round" (click)="eliminarItem('The Flash')">Eliminar</ion-button>
+  </ion-card>
+
+  <!-- Tarjeta 2 - Ghost World -->
+  <ion-card>
+    <img alt="Ghost World cover" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRh4BHOs8zKf7kDZnjptUL419cRr5-znNiGBA&s" style="width: 250px; height: 250px;" />
+    <ion-card-header>
+      <ion-card-title>Ghost World</ion-card-title>
+      <ion-card-subtitle>La historia de dos adolescentes cínicas que navegan por la vida después de graduarse de la escuela secundaria.</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      Precio: $9.300<br>
+      Autor: Daniel Clowes<br>
+      Editor: Fantagraphics Books<br>
+      Fecha de publicación: 1997
+    </ion-card-content>
+    <!-- Botón Eliminar -->
+    <ion-button color="success" shape="round" (click)="eliminarItem('Ghost World')">Eliminar</ion-button>
+  </ion-card>
+
+  <!-- Modal para agregar/modificar cómics -->
+  <ion-modal [isOpen]="isModalOpen" (didDismiss)="closeModal()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{ modalAction }} Cómic</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeModal()">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-item>
+          <ion-label position="floating">Título</ion-label>
+          <ion-input [(ngModel)]="comicTitle"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Subtítulo</ion-label>
+          <ion-input [(ngModel)]="comicSubtitle"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Descripción</ion-label>
+          <ion-input [(ngModel)]="comicDescription"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Precio</ion-label>
+          <ion-input type="number" [(ngModel)]="comicPrice"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Autor</ion-label>
+          <ion-input [(ngModel)]="comicAuthor"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Ilustrador</ion-label>
+          <ion-input [(ngModel)]="comicIllustrator"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Editor</ion-label>
+          <ion-input [(ngModel)]="comicEditor"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Fecha de Publicación</ion-label>
+          <ion-input [(ngModel)]="comicPublishDate"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">URL de la imagen</ion-label>
+          <ion-input [(ngModel)]="comicImage"></ion-input>
+        </ion-item>
+        <ion-button expand="block" color="success" (click)="saveComic()">{{ modalAction }}</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

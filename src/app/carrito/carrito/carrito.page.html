@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-title>Carrito de compras</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="carrito.length > 0; else noProducts">
+  <h2>Productos en tu carrito:</h2>
+
+  <ion-list>
+    <ion-item *ngFor="let comic of carrito">
+      <ion-thumbnail slot="start">
+        <img [src]="comic.image" />
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{ comic.title }}</h2>
+        <p>{{ comic.price }}</p>
+      </ion-label>
+      <ion-button color="danger" (click)="eliminarDelCarrito(comic)">Eliminar</ion-button>
+    </ion-item>
+  </ion-list>
+
+  
+  <ion-button color="success" expand="full" (click)="presentAlert()">Finalizar compra</ion-button>
+
+  
+  
+</ion-content>
+
+<ng-template #noProducts>
+  <ion-text color="danger">
+    <h2>Tu carrito está vacío</h2>
+  </ion-text>
+</ng-template>
+

@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <div class="logo-container">
+      <img src="https://files.oaiusercontent.com/file-7aQOZvFNHSsDYyIkHWGyB0RZ?se=2024-10-09T18%3A35%3A10Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D4de5d0f1-d634-49ef-baf5-f60f0113e930.webp&sig=ikBXnFpWVPJtTVCBo6ckfeUAcoRaCGy2XNnZ0qtxmNA%3D" alt="logo" class="logo">
+    </div>
+    <ion-title>AURONCOMICS</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="login-section ion-padding">
+    <div class="heading ion-padding">
+      <h1>BIENVENIDO A AURONCOMICS!</h1>
+    </div>
+
+    <div class="login-form ion-padding">
+      <form (ngSubmit)="ingresar()">
+
+        <!-- Nombre -->
+        <div class="form-input">
+          <ion-icon name="person-outline"></ion-icon>
+          <ion-item>
+            <ion-label position="floating">Nombre</ion-label>
+            <ion-input [(ngModel)]="nombre" name="nombre" required></ion-input>
+          </ion-item>
+        </div>
+
+        <!-- Correo Electrónico -->
+        <div class="form-input">
+          <ion-icon name="mail-outline"></ion-icon>
+          <ion-item>
+            <ion-label position="floating">Correo Electrónico</ion-label>
+            <ion-input [(ngModel)]="correo" name="correo" type="email" required></ion-input>
+          </ion-item>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="form-input">
+          <ion-icon name="lock-closed-outline"></ion-icon>
+          <ion-item>
+            <ion-label position="floating">Contraseña</ion-label>
+            <ion-input [(ngModel)]="password" name="password" type="password" required></ion-input>
+          </ion-item>
+        </div>
+
+        <!-- Botones de Inicio y Registro -->
+        <div class="action-buttons ion-padding">
+          <ion-button color="success" shape="round" type="submit">Ingresar</ion-button>
+          <ion-button color="success" shape="round" [routerLink]="['/registro']">Registrarse</ion-button>
+        </div>
+        <a href="/olvido">¿restaurar contraseña?</a>
+      </form>
+    </div>
+  </div>
+</ion-content>
+

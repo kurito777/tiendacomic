@@ -1,20 +1,93 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-title>AURONCOMICS</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+<!-- Menú lateral -->
+<ion-menu contentId="main-content">
+  <ion-header>
+    <ion-toolbar color="success">
+      <ion-title>Menú</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item>
+        <ion-button color="success" shape="round" [routerLink]="['/perfil']">PERFIL</ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-button color="success" shape="round" [routerLink]="['/login']">CERRAR SESION</ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-button color="success" shape="round" [routerLink]="['/acercade']">ACERCA DE</ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+<!-- Contenido principal -->
+<ion-content [fullscreen]="true" id="main-content">
+ 
+
+  <!-- Recorre la lista de cómics -->
+  <ion-card *ngFor="let comic of comics">
+    <img [src]="comic.image" alt="{{ comic.title }}" style="width: 250px; height: 250px;" />
+    <ion-card-header>
+      <ion-card-title>{{ comic.title }}</ion-card-title>
+      <ion-card-subtitle>{{ comic.subtitle }}</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p><strong>Precio:</strong> {{ comic.price }}</p>
+
+      <!-- Botón para mostrar más detalles -->
+      <ion-button color="success" shape="round" (click)="toggleDetails(comic)">
+        {{ selectedComic === comic ? 'Cerrar detalles' : 'Ver detalles' }}
+      </ion-button>
+
+      <!-- Mostrar detalles si el cómic está seleccionado -->
+      <div *ngIf="selectedComic === comic">
+        <p><strong>Sinopsis:</strong> {{ comic.description }}</p>
+        <p><strong>Autor:</strong> {{ comic.author }}</p>
+        <p><strong>Ilustrador:</strong> {{ comic.illustrator }}</p>
+        <p><strong>Editor:</strong> {{ comic.editor }}</p>
+        <p><strong>Fecha de Publicación:</strong> {{ comic.publishDate }}</p>
+        <ion-button color="warning" (click)="agregarAlCarrito(comic)">Agregar al carrito</ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <h1>PRODUCTOS EN DESCUENTO</h1>
+
+  <!-- Recorre la lista de productos en descuento -->
+  <ion-card *ngFor="let comic of comicsDescuento">
+    <img [src]="comic.image" alt="{{ comic.title }}" style="width: 250px; height: 250px;" />
+    <ion-card-header>
+      <ion-card-title>{{ comic.title }}</ion-card-title>
+      <ion-card-subtitle>{{ comic.subtitle }}</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p><strong>Precio:</strong> {{ comic.price }}</p>
+
+      <!-- Botón para mostrar más detalles -->
+      <ion-button color="success" shape="round" (click)="toggleDetails(comic)">
+        {{ selectedComic === comic ? 'Cerrar detalles' : 'Ver detalles' }}
+      </ion-button>
+
+      <!-- Mostrar detalles si el cómic está seleccionado -->
+      <div *ngIf="selectedComic === comic">
+        <p><strong>Sinopsis:</strong> {{ comic.description }}</p>
+        <p><strong>Autor:</strong> {{ comic.author }}</p>
+        <p><strong>Ilustrador:</strong> {{ comic.illustrator }}</p>
+        <p><strong>Editor:</strong> {{ comic.editor }}</p>
+        <p><strong>Fecha de Publicación:</strong> {{ comic.publishDate }}</p>
+        <ion-button color="warning" (click)="agregarAlCarrito(comic)">Agregar al carrito</ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Botón para ver carrito -->
+  <ion-button *ngIf="carrito.length > 0" color="danger" (click)="verCarrito()">Ver carrito ({{ carrito.length }})</ion-button>
 </ion-content>

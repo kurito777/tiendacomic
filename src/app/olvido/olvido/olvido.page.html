@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-title>Restaurar Contraseña</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="restaurar-section ion-padding">
+    <div class="heading ion-padding">
+      <ion-buttons slot="start">
+        <ion-back-button default-href="login">Login</ion-back-button>
+      </ion-buttons>
+      <h1>Restaurar Contraseña</h1>
+    </div>
+
+
+    <div class="restaurar-form ion-padding">
+      <!-- Correo Electrónico -->
+      <div class="form-input">
+        <ion-icon name="mail-outline"></ion-icon>
+        <ion-item>
+          <ion-label position="floating">Correo Electrónico</ion-label>
+          <ion-input [(ngModel)]="correo" name="correo" type="email" required></ion-input>
+        </ion-item>
+      </div>
+
+      <!-- Nueva Contraseña -->
+      <div class="form-input">
+        <ion-icon name="lock-closed-outline"></ion-icon>
+        <ion-item>
+          <ion-label position="floating">Nueva Contraseña</ion-label>
+          <ion-input [(ngModel)]="password" name="password" type="password" required></ion-input>
+        </ion-item>
+      </div>
+
+      <!-- Confirmar Nueva Contraseña -->
+      <div class="form-input">
+        <ion-icon name="lock-closed-outline"></ion-icon>
+        <ion-item>
+          <ion-label position="floating">Confirmar Contraseña</ion-label>
+          <ion-input [(ngModel)]="confirmPassword" name="confirmPassword" type="password" required></ion-input>
+        </ion-item>
+      </div>
+
+      <!-- Botón Restaurar -->
+      <div class="action-buttons ion-padding">
+        <ion-button  color="success" (click)="restaurarPassword()">Restaurar Contraseña</ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>
