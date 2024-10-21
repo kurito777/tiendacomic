@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController } from '@ionic/angular';
+import { ServicesService } from 'src/app/services/services.service'; // Asegúrate de que la ruta es correcta
 
 @Component({
   selector: 'app-login',
@@ -11,19 +12,11 @@ export class LoginPage {
   correo: string = '';
   password: string = '';
 
-  cliente = {
-    nombre: 'cliente',
-    correo: 'cliente@correo.com',
-    password: 'Cliente@123'
-  };
-
-  administrador = {
-    nombre: 'admin',
-    correo: 'admin@correo.com',
-    password: 'Admin@123'
-  };
-
-  constructor(private navCtrl: NavController, private alertController: AlertController) {}
+  constructor(
+    private navCtrl: NavController,
+    private alertController: AlertController,
+    private services: ServicesService // Inyectamos el servicio
+  ) {}
 
   validateEmail(email: string): boolean {
     const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -31,7 +24,6 @@ export class LoginPage {
   }
 
   validatePassword(password: string): boolean {
-    // Cambiada la expresión regular para requerir solo una mayúscula y mínimo 6 caracteres
     const re = /^(?=.*[A-Z]).{6,}$/;
     return re.test(password);
   }
@@ -67,58 +59,32 @@ export class LoginPage {
       return;
     }
 
-    const users = JSON.parse(localStorage.getItem('usuarios') || '[]');
+    try {
+      const user = await this.services.obtenerUsuario(this.correo, this.password);
 
-    const user = users.find(
-      (user: any) =>
-        user.nombre.toLowerCase() === this.nombre.toLowerCase() &&
-        user.correo.toLowerCase() === this.correo.toLowerCase() &&
-        user.password === this.password
-    );
-
-    if (user) {
-      const alert = await this.alertController.create({
-        header: 'Inicio de Sesión Exitoso',
-        message: 'Bienvenido a AURONCOMICS.',
-        buttons: ['OK'],
-      });
-      await alert.present();
-      this.navCtrl.navigateRoot('/home');
-    } 
-    else if (
-      this.nombre.toLowerCase() === this.cliente.nombre.toLowerCase() &&
-      this.correo.toLowerCase() === this.cliente.correo.toLowerCase() &&
-      this.password === this.cliente.password
-    ) {
-      const alert = await this.alertController.create({
-        header: 'Inicio de Sesión Exitoso',
-        message: 'Bienvenido cliente.',
-        buttons: ['OK'],
-      });
-      await alert.present();
-      this.navCtrl.navigateRoot('/home');
-    } 
-    else if (
-      this.nombre.toLowerCase() === this.administrador.nombre.toLowerCase() &&
-      this.correo.toLowerCase() === this.administrador.correo.toLowerCase() &&
-      this.password === this.administrador.password
-    ) {
-      const alert = await this.alertController.create({
-        header: 'Inicio de Sesión Exitoso',
-        message: 'Bienvenido administrador.',
-        buttons: ['OK'],
-      });
-      await alert.present();
-      this.navCtrl.navigateRoot('/admin');
-    } 
-    else {
+      if (user) {
+        const alert = await this.alertController.create({
+          header: 'Inicio de Sesión Exitoso',
+          message: 'Bienvenido a AURONCOMICS.',
+          buttons: ['OK'],
+        });
+        await alert.present();
+        this.navCtrl.navigateRoot('/home');
+      } else {
+        const alert = await this.alertController.create({
+          header: 'Error',
+          message: 'Nombre, correo o contraseña incorrectos.',
+          buttons: ['OK'],
+        });
+        await alert.present();
+      }
+    } catch (error) {
       const alert = await this.alertController.create({
         header: 'Error',
-        message: 'Nombre, correo o contraseña incorrectos.',
+        message: 'No se pudo conectar a la base de datos.',
         buttons: ['OK'],
       });
       await alert.present();
     }
   }
 }
-
