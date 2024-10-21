@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Platform } from '@ionic/angular';
+import { Comic } from 'src/app/home/home.page';
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +47,47 @@ export class ServicesService {
       });
     });
   }
-
+  async obtenerComics(): Promise<Comic[]> {
+    if (!this.database) {
+      console.error('La base de datos no está disponible aún.');
+      return Promise.resolve([]); // Retorna un array vacío si la base de datos no está disponible
+    }
+  
+    const query = 'SELECT * FROM COMIC'; // Asegúrate de que el nombre de la tabla sea correcto
+    const response: Comic[] = [];
+  
+    try {
+      const res = await this.database.executeSql(query, []);
+  
+      if (res.rows.length > 0) {
+        for (let i = 0; i < res.rows.length; i++) {
+          const comic: Comic = {
+            title: res.rows.item(i).NOMBRE, // Asegúrate de que el nombre de la propiedad coincida con la interfaz
+            subtitle: '', // Puedes llenar esto si tienes un subtítulo
+            description: '', // Llenar según tus necesidades
+            price: res.rows.item(i).PRECIO_UNITARIO,
+            author: '', // Llenar según tus necesidades
+            illustrator: '', // Llenar según tus necesidades
+            editor: '', // Llenar según tus necesidades
+            publishDate: res.rows.item(i).ANO_PUBLICACION,
+            image: res.rows.item(i).IMAGEN
+          };
+          response.push(comic);
+        }
+        console.log('Cómics recuperados: ', response);
+      } else {
+        console.log('No se encontraron cómics.');
+      }
+  
+      return response; // Retorna la lista de cómics
+    } catch (e) {
+      console.error('Error al obtener cómics:', e);
+      throw e; // Lanza el error para manejarlo en el componente
+    }
+  }
+  
+  
+  
   insertarUsuario(nombreCompleto: string, telefono: string, correo: string, contrasena: string) {
     if (!this.database) {
       console.error('La base de datos no está disponible aún.');
@@ -72,16 +113,25 @@ export class ServicesService {
       });
   }
 
+  
   async obtenerUsuario(correo: string, contrasena: string) {
     if (!this.database) {
       console.error('La base de datos no está disponible aún.');
       return null; // Retorna null si la base de datos no está disponible
     }
-
+  
+    // Limpiar los valores para evitar problemas con espacios en blanco
+    correo = correo.trim();
+    contrasena = contrasena.trim();
+  
     const query = 'SELECT * FROM USUARIO WHERE CORREO = ? AND CONTRASENA = ?';
     try {
+      console.log('Consulta:', query);
+      console.log('Parámetros:', [correo, contrasena]);
+  
       const res = await this.database.executeSql(query, [correo, contrasena]);
-
+      console.log('Resultado de la consulta:', res);
+  
       if (res.rows.length > 0) {
         return {
           id: res.rows.item(0).ID,
@@ -90,6 +140,7 @@ export class ServicesService {
           correo: res.rows.item(0).CORREO
         };
       } else {
+        console.log('No se encontró el usuario.');
         return null; // Retorna null si no se encontró el usuario
       }
     } catch (e) {
@@ -97,6 +148,7 @@ export class ServicesService {
       throw e; // Lanza el error para manejarlo en el componente
     }
   }
+  
 
   // Otros métodos...
 }
