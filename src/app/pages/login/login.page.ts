@@ -31,7 +31,8 @@ export class LoginPage {
   }
 
   validatePassword(password: string): boolean {
-    const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    // Cambiada la expresión regular para requerir solo una mayúscula y mínimo 6 caracteres
+    const re = /^(?=.*[A-Z]).{6,}$/;
     return re.test(password);
   }
 
