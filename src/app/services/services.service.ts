@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
-//import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Platform } from '@ionic/angular';
 
 @Injectable({
@@ -30,7 +29,6 @@ export class ServicesService {
 
   crearTablas() {
     let queries = [
-      // Tabla Usuario
       `CREATE TABLE IF NOT EXISTS USUARIO (
         ID INTEGER PRIMARY KEY AUTOINCREMENT,
         NOMBRE_COMPLETO VARCHAR(100) NOT NULL,
@@ -38,12 +36,10 @@ export class ServicesService {
         CORREO VARCHAR(100) NOT NULL,
         CONTRASENA VARCHAR(100) NOT NULL
       );`,
-      // Tabla Rol
       `CREATE TABLE IF NOT EXISTS ROL (
         ID INTEGER PRIMARY KEY AUTOINCREMENT,
         NOMBRE VARCHAR(50) NOT NULL
       );`,
-      // Tabla Comic
       `CREATE TABLE IF NOT EXISTS COMIC (
         ID INTEGER PRIMARY KEY AUTOINCREMENT,
         NOMBRE VARCHAR(100) NOT NULL,
@@ -52,21 +48,17 @@ export class ServicesService {
         IMAGEN TEXT,
         PRECIO_UNITARIO REAL NOT NULL
       );`,
-      // Tabla Editorial
       `CREATE TABLE IF NOT EXISTS EDITORIAL (
         NOMBRE VARCHAR(100) PRIMARY KEY
       );`,
-      // Tabla Autores
       `CREATE TABLE IF NOT EXISTS AUTORES (
         NOMBRE_COMPLETO VARCHAR(100) PRIMARY KEY
       );`,
-      // Tabla Carro
       `CREATE TABLE IF NOT EXISTS CARRO (
         ID INTEGER PRIMARY KEY AUTOINCREMENT,
         PRECIO REAL NOT NULL,
         CANTIDAD INTEGER NOT NULL
       );`,
-      // Tabla Admin (deriva de Usuario)
       `CREATE TABLE IF NOT EXISTS ADMIN (
         ID INTEGER PRIMARY KEY AUTOINCREMENT,
         NOMBRE VARCHAR(100) NOT NULL,
@@ -74,7 +66,6 @@ export class ServicesService {
         CORREO VARCHAR(100) NOT NULL,
         CONTRASENA VARCHAR(100) NOT NULL
       );`,
-      // Tabla Cliente (deriva de Usuario)
       `CREATE TABLE IF NOT EXISTS CLIENTE (
         ID INTEGER PRIMARY KEY AUTOINCREMENT,
         NOMBRE VARCHAR(100) NOT NULL,
@@ -98,15 +89,26 @@ export class ServicesService {
       console.error('La base de datos no está disponible aún.');
       return;
     }
-    let query = 'INSERT INTO USUARIO (NOMBRE_COMPLETO, TELEFONO, CORREO, CONTRASENA) VALUES (?, ?, ?, ?);';
-    return this.database.executeSql(query, [nombreCompleto, telefono, correo, contrasena])
-      .then(() => {
-        console.log('Usuario insertado.');
+  
+    let queryExistencia = 'SELECT * FROM USUARIO WHERE CORREO = ? OR NOMBRE_COMPLETO = ?';
+    return this.database.executeSql(queryExistencia, [correo, nombreCompleto])
+      .then(res => {
+        if (res.rows.length > 0) {
+          console.log('El usuario ya existe.');
+          throw new Error('El usuario ya existe con este correo o nombre.');
+        } else {
+          let query = 'INSERT INTO USUARIO (NOMBRE_COMPLETO, TELEFONO, CORREO, CONTRASENA) VALUES (?, ?, ?, ?);';
+          return this.database.executeSql(query, [nombreCompleto, telefono, correo, contrasena])
+            .then(() => {
+              console.log('Usuario insertado.');
+            });
+        }
       }).catch(e => {
         console.log('Error al insertar usuario: ' + JSON.stringify(e));
+        throw e; 
       });
   }
-
+  
   insertarComic(nombre: string, anoPublicacion: number, nbn: string, imagen: string, precioUnitario: number) {
     if (!this.database) {
       console.error('La base de datos no está disponible aún.');
@@ -121,7 +123,6 @@ export class ServicesService {
       });
   }
 
-  // ELIMINAR OBJETO POR NOMBRE
   eliminarObjetoPorNombre(nombreCompleto: string) {
     if (!this.database) {
       console.error('La base de datos no está disponible aún.');
@@ -136,7 +137,6 @@ export class ServicesService {
       });
   }
 
-  // ACTUALIZAR OBJETO
   actualizarObjeto(nombreAnterior: string, nuevoNombre: string) {
     if (!this.database) {
       console.error('La base de datos no está disponible aún.');
@@ -151,7 +151,6 @@ export class ServicesService {
       });
   }
 
-  // RECUPERAR OBJETOS DE UNA TABLA
   obtenerObjetos() {
     if (!this.database) {
       console.error('La base de datos no está disponible aún.');
